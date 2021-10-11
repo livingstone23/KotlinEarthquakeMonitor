@@ -1,2 +1,2 @@
 # KotlinEarthquakeMonitor
-Learn to use Recycler
+Learn to use RecyclerView
