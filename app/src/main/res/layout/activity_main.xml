@@ -19,5 +19,18 @@
         android:layout_height="wrap_content"
         />
 
+    <TextView
+        android:id="@+id/eq_empty_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:visibility="gone"
+        android:layout_gravity="center"
+        android:textSize="24sp"
+        android:textColor="@color/black"
+        android:gravity="center"
+        android:text="@string/eq_empty_view"
+        />
+
 </FrameLayout>
 </layout>

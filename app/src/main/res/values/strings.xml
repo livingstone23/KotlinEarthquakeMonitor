@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">KotlinEarthquakeMonitor</string>
+    <string name="eq_empty_view">No earthquake right now</string>
 </resources>
