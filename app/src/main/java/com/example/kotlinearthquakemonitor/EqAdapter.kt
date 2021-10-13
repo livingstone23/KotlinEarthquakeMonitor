@@ -1,5 +1,6 @@
 package com.example.kotlinearthquakemonitor
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.annotation.NonNull
@@ -7,6 +8,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.kotlinearthquakemonitor.databinding.EqListItemBinding
+import kotlin.math.log
+
+private val TAG = EqAdapter::class.java.simpleName
 
 class EqAdapter: ListAdapter<Earthquake, EqAdapter.EqViewHolder>(DiffCallback) {
 
@@ -19,6 +23,8 @@ class EqAdapter: ListAdapter<Earthquake, EqAdapter.EqViewHolder>(DiffCallback) {
             return oldItem == newItem
         }
     }
+
+    lateinit var onItemClickListener: (Earthquake) -> Unit
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EqAdapter.EqViewHolder {
 
@@ -42,6 +48,15 @@ class EqAdapter: ListAdapter<Earthquake, EqAdapter.EqViewHolder>(DiffCallback) {
         fun bind(earthquake: Earthquake){
             binding.eqMagnitudeText.text = earthquake.magnitude.toString()
             binding.eqPlaceText.text = earthquake.place
+
+            binding.root.setOnClickListener{
+                    if(::onItemClickListener.isInitialized){
+                        onItemClickListener(earthquake)
+                    } else {
+                        Log.e("TAG","onItemClickListener not initialized")
+                    }
+
+            }
         }
     }
 }
