@@ -12,13 +12,17 @@ class MainViewModel: ViewModel() {
     val eqList: LiveData<MutableList<Earthquake>>
     get() = _eqList
 
+    private val repository = MainRepository()
+
     init {
         //Nuevo forma de corutina y permite comentar la creacion de variable job y corutineScore-
         viewModelScope.launch {
-            _eqList.value = fetchEarthquake()
+            _eqList.value = repository.fetchEarthquake()
         }
     }
 
+    //FUNCIONES SE TERMINAN PASANDO AL MAINVIEWMODEL
+    /*
     //Palabra suspend permite habilitar al metodo para ser llamada desde una coroutine
     private suspend fun fetchEarthquake(): MutableList<Earthquake> {
 
@@ -79,6 +83,8 @@ class MainViewModel: ViewModel() {
 
         return eqList
     }
+    */
+
 }
 
 //ANTERIOR FORMA DE HACER COROUTINA
