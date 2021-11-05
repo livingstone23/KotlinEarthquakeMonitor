@@ -7,7 +7,8 @@ import retrofit2.converter.scalars.ScalarsConverterFactory
 
 interface EqApiService {
     @GET("all_hour.geojson")
-    fun getLastHourEarthquakes(): String
+    //Por ser llamado un metodo desde una corutina debe llevar la palabra suspend
+    suspend fun getLastHourEarthquakes(): String
 }
 
 
@@ -16,6 +17,6 @@ private var retrofit = Retrofit.Builder()
     .addConverterFactory(ScalarsConverterFactory.create())
     .build()
 
-var service: EqApiService = retrofit.create(EqApiService::class.java)
+var service: EqApiService = retrofit.create<EqApiService>(EqApiService::class.java)
 
 
