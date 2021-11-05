@@ -20,72 +20,72 @@ class MainViewModel: ViewModel() {
             _eqList.value = repository.fetchEarthquake()
         }
     }
+}
 
-    //FUNCIONES SE TERMINAN PASANDO AL MAINVIEWMODEL
-    /*
-    //Palabra suspend permite habilitar al metodo para ser llamada desde una coroutine
-    private suspend fun fetchEarthquake(): MutableList<Earthquake> {
 
-        return withContext(Dispatchers.IO){
-            val eqJsonResponse = service.getLastHourEarthquakes()
-            val eqList =  parseEqResult(eqJsonResponse)
-            eqList
+//FUNCIONES SE TERMINAN PASANDO AL MAINVIEWMODEL
+/*
+//Palabra suspend permite habilitar al metodo para ser llamada desde una coroutine
+private suspend fun fetchEarthquake(): MutableList<Earthquake> {
 
-            //Log.d("fetchEarthquake",eqListString)
-            //mutableListOf<Earthquake>()
-        }
+    return withContext(Dispatchers.IO){
+        val eqJsonResponse = service.getLastHourEarthquakes()
+        val eqList =  parseEqResult(eqJsonResponse)
+        eqList
+
+        //Log.d("fetchEarthquake",eqListString)
+        //mutableListOf<Earthquake>()
+    }
+}
+
+private fun parseEqResult(eqJsonResponse: EqJsonResponse): MutableList<Earthquake> {
+    //val eqJsonObject = JSONObject(eqListString)
+    //obtenemos seccion del json
+    //val featureJsonArray = eqJsonObject.getJSONArray("features")
+
+    val eqList = mutableListOf<Earthquake>()
+    val featureList = eqJsonResponse.features
+
+    for(feature in featureList) {
+        val properties = feature.properties
+
+        val id = feature.id
+        val magnitude = properties.mag
+        val place = properties.place
+        val time = properties.time
+
+        val geometry =feature.geometry
+        val longitude = geometry.longitude
+        val latitude = geometry.latitude
+
+        eqList.add(Earthquake(id, place, magnitude, time, longitude, latitude))
     }
 
-    private fun parseEqResult(eqJsonResponse: EqJsonResponse): MutableList<Earthquake> {
-        //val eqJsonObject = JSONObject(eqListString)
-        //obtenemos seccion del json
-        //val featureJsonArray = eqJsonObject.getJSONArray("features")
+    /*
+    for (i in 0 until featureJsonArray.length())
+    {
+        val featuresJSONObject = featureJsonArray[i] as JSONObject
+        val id = featuresJSONObject.getString("id")
 
-        val eqList = mutableListOf<Earthquake>()
-        val featureList = eqJsonResponse.features
+        val propertiesJsonObject =  featuresJSONObject.getJSONObject("properties")
+        val magnitude = propertiesJsonObject.getDouble("mag")
+        val place = propertiesJsonObject.getString("place")
+        val time = propertiesJsonObject.getLong("time")
 
-        for(feature in featureList) {
-            val properties = feature.properties
+        val geometryJsonObject =  featuresJSONObject.getJSONObject("geometry")
+        val coordinateJsonArray = geometryJsonObject.getJSONArray("coordinates")
+        val longitude = coordinateJsonArray.getDouble(0)
+        val latitude = coordinateJsonArray.getDouble(1)
 
-            val id = feature.id
-            val magnitude = properties.mag
-            val place = properties.place
-            val time = properties.time
+        val earthquake = Earthquake(id, place, magnitude, time, longitude, latitude)
 
-            val geometry =feature.geometry
-            val longitude = geometry.longitude
-            val latitude = geometry.latitude
-
-            eqList.add(Earthquake(id, place, magnitude, time, longitude, latitude))
-        }
-
-        /*
-        for (i in 0 until featureJsonArray.length())
-        {
-            val featuresJSONObject = featureJsonArray[i] as JSONObject
-            val id = featuresJSONObject.getString("id")
-
-            val propertiesJsonObject =  featuresJSONObject.getJSONObject("properties")
-            val magnitude = propertiesJsonObject.getDouble("mag")
-            val place = propertiesJsonObject.getString("place")
-            val time = propertiesJsonObject.getLong("time")
-
-            val geometryJsonObject =  featuresJSONObject.getJSONObject("geometry")
-            val coordinateJsonArray = geometryJsonObject.getJSONArray("coordinates")
-            val longitude = coordinateJsonArray.getDouble(0)
-            val latitude = coordinateJsonArray.getDouble(1)
-
-            val earthquake = Earthquake(id, place, magnitude, time, longitude, latitude)
-
-            eqList.add(earthquake)
-        }
-        */
-
-        return eqList
+        eqList.add(earthquake)
     }
     */
 
+    return eqList
 }
+*/
 
 //ANTERIOR FORMA DE HACER COROUTINA
 /*
