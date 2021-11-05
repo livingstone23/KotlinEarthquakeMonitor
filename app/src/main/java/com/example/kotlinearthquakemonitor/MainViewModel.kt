@@ -1,12 +1,10 @@
 package com.example.kotlinearthquakemonitor
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.*
-import org.json.JSONObject
 
 class MainViewModel: ViewModel() {
 
@@ -25,24 +23,39 @@ class MainViewModel: ViewModel() {
     private suspend fun fetchEarthquake(): MutableList<Earthquake> {
 
         return withContext(Dispatchers.IO){
-            val eqListString = service.getLastHourEarthquakes()
+            val eqJsonResponse = service.getLastHourEarthquakes()
+            val eqList =  parseEqResult(eqJsonResponse)
+            eqList
 
             //Log.d("fetchEarthquake",eqListString)
-
-            val eqList =  parseEqResult(eqListString)
-
-            eqList
             //mutableListOf<Earthquake>()
         }
     }
 
-    private fun parseEqResult(eqListString: String): MutableList<Earthquake> {
-        val eqJsonObject = JSONObject(eqListString)
+    private fun parseEqResult(eqJsonResponse: EqJsonResponse): MutableList<Earthquake> {
+        //val eqJsonObject = JSONObject(eqListString)
         //obtenemos seccion del json
-        val featureJsonArray = eqJsonObject.getJSONArray("features")
+        //val featureJsonArray = eqJsonObject.getJSONArray("features")
 
         val eqList = mutableListOf<Earthquake>()
+        val featureList = eqJsonResponse.features
 
+        for(feature in featureList) {
+            val properties = feature.properties
+
+            val id = feature.id
+            val magnitude = properties.mag
+            val place = properties.place
+            val time = properties.time
+
+            val geometry =feature.geometry
+            val longitude = geometry.longitude
+            val latitude = geometry.latitude
+
+            eqList.add(Earthquake(id, place, magnitude, time, longitude, latitude))
+        }
+
+        /*
         for (i in 0 until featureJsonArray.length())
         {
             val featuresJSONObject = featureJsonArray[i] as JSONObject
@@ -62,6 +75,8 @@ class MainViewModel: ViewModel() {
 
             eqList.add(earthquake)
         }
+        */
+
         return eqList
     }
 }
