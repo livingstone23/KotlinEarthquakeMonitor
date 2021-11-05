@@ -1,14 +1,13 @@
-package com.example.kotlinearthquakemonitor
+package com.example.kotlinearthquakemonitor.main
 
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.annotation.NonNull
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.kotlinearthquakemonitor.Earthquake
 import com.example.kotlinearthquakemonitor.databinding.EqListItemBinding
-import kotlin.math.log
 
 private val TAG = EqAdapter::class.java.simpleName
 
@@ -26,7 +25,7 @@ class EqAdapter: ListAdapter<Earthquake, EqAdapter.EqViewHolder>(DiffCallback) {
 
     lateinit var onItemClickListener: (Earthquake) -> Unit
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EqAdapter.EqViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EqViewHolder {
 
         val binding = EqListItemBinding.inflate(LayoutInflater.from(parent.context))
 
@@ -34,7 +33,7 @@ class EqAdapter: ListAdapter<Earthquake, EqAdapter.EqViewHolder>(DiffCallback) {
         return EqViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: EqAdapter.EqViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: EqViewHolder, position: Int) {
         val earthquake = getItem(position)
         //holder.magnitudeText.text = earthquake.magnitude.toString()
         //holder.placeText.text = earthquake.place

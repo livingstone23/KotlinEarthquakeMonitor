@@ -1,5 +1,8 @@
-package com.example.kotlinearthquakemonitor
+package com.example.kotlinearthquakemonitor.main
 
+import com.example.kotlinearthquakemonitor.Earthquake
+import com.example.kotlinearthquakemonitor.api.EqJsonResponse
+import com.example.kotlinearthquakemonitor.api.service
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

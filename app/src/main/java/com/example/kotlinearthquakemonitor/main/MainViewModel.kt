@@ -1,9 +1,10 @@
-package com.example.kotlinearthquakemonitor
+package com.example.kotlinearthquakemonitor.main
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.kotlinearthquakemonitor.Earthquake
 import kotlinx.coroutines.*
 
 class MainViewModel: ViewModel() {

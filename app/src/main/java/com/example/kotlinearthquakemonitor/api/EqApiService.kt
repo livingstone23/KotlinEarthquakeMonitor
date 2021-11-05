@@ -1,9 +1,8 @@
-package com.example.kotlinearthquakemonitor
+package com.example.kotlinearthquakemonitor.api
 
 import retrofit2.http.GET
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import retrofit2.converter.scalars.ScalarsConverterFactory
 
 
 interface EqApiService {

@@ -1,4 +1,4 @@
-package com.example.kotlinearthquakemonitor
+package com.example.kotlinearthquakemonitor.api
 
 class Geometry(private val coordinates: Array<Double>) {
     val longitude: Double
