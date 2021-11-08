@@ -1,26 +1,65 @@
 package com.example.kotlinearthquakemonitor.main
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import android.app.Application
+import android.util.Log
+import androidx.lifecycle.*
 import com.example.kotlinearthquakemonitor.Earthquake
+import com.example.kotlinearthquakemonitor.api.ApiResponseStatus
+import com.example.kotlinearthquakemonitor.database.getDatabase
 import kotlinx.coroutines.*
+import java.net.UnknownHostException
 
-class MainViewModel: ViewModel() {
+class MainViewModel(application: Application, private val sortType: Boolean): AndroidViewModel(application) {
 
+
+    //private var _eqList = MutableLiveData<MutableList<Earthquake>>()
+    //val eqList: LiveData<MutableList<Earthquake>>
+    //get() = _eqList
+
+    private val database = getDatabase(application)
+
+    private val repository = MainRepository(database)
+
+    private val _status = MutableLiveData<ApiResponseStatus>()
+    val status: LiveData<ApiResponseStatus>
+        get() = _status
+
+    //val eqList = repository.eqList
     private var _eqList = MutableLiveData<MutableList<Earthquake>>()
     val eqList: LiveData<MutableList<Earthquake>>
-    get() = _eqList
-
-    private val repository = MainRepository()
+        get() = _eqList
 
     init {
         //Nuevo forma de corutina y permite comentar la creacion de variable job y corutineScore-
+       //reloadEarthquakes()
+        reloadEarthquakesFromDatabase(sortType)
+    }
+
+    private fun reloadEarthquakes(){
         viewModelScope.launch {
-            _eqList.value = repository.fetchEarthquake()
+            //_eqList.value =
+            try {
+                _status.value = ApiResponseStatus.LOADING
+                _eqList.value = repository.fetchEarthquake(sortType)
+
+                _status.value = ApiResponseStatus.DONE
+            } catch (eMsg: UnknownHostException) {
+                _status.value = ApiResponseStatus.ERROR
+                Log.d("No internet conexion", eMsg.toString())
+            }
+
+
         }
     }
+
+
+    fun reloadEarthquakesFromDatabase(sortByMagnitude: Boolean){
+        viewModelScope.launch {
+            _eqList.value = repository.fetchEarthquakeFromDb(sortByMagnitude)
+        }
+    }
+
+
 }
 
 

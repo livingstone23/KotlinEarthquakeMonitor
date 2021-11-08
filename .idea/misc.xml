@@ -3,8 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/LCANO/GITHUB/kotlinearthquake/app/src/main/res/drawable/ic_chevron_right_black.xml" value="0.23385416666666667" />
+        <entry key="..\:/LCANO/GITHUB/kotlinearthquake/app/src/main/res/drawable/ic_clock_black.xml" value="0.23385416666666667" />
+        <entry key="..\:/LCANO/GITHUB/kotlinearthquake/app/src/main/res/drawable/ic_place_black.xml" value="0.23385416666666667" />
+        <entry key="..\:/LCANO/GITHUB/kotlinearthquake/app/src/main/res/drawable/ic_warning_black.xml" value="0.23385416666666667" />
         <entry key="..\:/LCANO/GITHUB/kotlinearthquake/app/src/main/res/layout/activity_main.xml" value="0.19479166666666667" />
         <entry key="..\:/LCANO/GITHUB/kotlinearthquake/app/src/main/res/layout/eq_list_item.xml" value="0.26510416666666664" />
+        <entry key="..\:/LCANO/GITHUB/kotlinearthquake/app/src/main/res/menu/main_menu.xml" value="0.21770833333333334" />
         <entry key="..\:/lcano/github/kotlinearthquake/app/src/main/res/layout/activity_main.xml" value="0.36666666666666664" />
         <entry key="..\:/lcano/github/kotlinearthquake/app/src/main/res/layout/eq_list_item.xml" value="0.20520833333333333" />
       </map>

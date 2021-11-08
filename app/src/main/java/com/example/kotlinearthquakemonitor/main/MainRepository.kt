@@ -1,22 +1,52 @@
 package com.example.kotlinearthquakemonitor.main
 
+import androidx.lifecycle.LiveData
 import com.example.kotlinearthquakemonitor.Earthquake
 import com.example.kotlinearthquakemonitor.api.EqJsonResponse
 import com.example.kotlinearthquakemonitor.api.service
+import com.example.kotlinearthquakemonitor.database.EqDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class MainRepository {
+class MainRepository(private val database: EqDatabase) {
+
+    //val eqList: LiveData<MutableList<Earthquake>> = database.eqDao.getEarthquakes()
 
     //Palabra suspend permite habilitar al metodo para ser llamada desde una coroutine
-    suspend fun fetchEarthquake(): MutableList<Earthquake> {
+    suspend fun fetchEarthquake(sortByMagnitude: Boolean): MutableList<Earthquake>
+    {
 
         return withContext(Dispatchers.IO){
             val eqJsonResponse = service.getLastHourEarthquakes()
             val eqList =  parseEqResult(eqJsonResponse)
-            eqList
+
+            database.eqDao.insertAll(eqList)
+            fetchEarthquakeFromDb(sortByMagnitude)
+            /*
+            if (sortByMagnitude){
+                database.eqDao.getEarthquakesByMagnitude()
+            } else {
+                database.eqDao.getEarthquakes()
+            }
+            */
+
+            //val earthquakes = database.eqDao.getEarthquakes()
+            //earthquakes
+            //eqList
         }
     }
+
+
+    suspend fun fetchEarthquakeFromDb(sortByMagnitude: Boolean): MutableList<Earthquake>{
+        return withContext(Dispatchers.IO){
+            if (sortByMagnitude){
+                database.eqDao.getEarthquakesByMagnitude()
+            } else {
+                database.eqDao.getEarthquakes()
+            }
+        }
+    }
+
 
     private fun parseEqResult(eqJsonResponse: EqJsonResponse): MutableList<Earthquake> {
 

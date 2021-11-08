@@ -2,15 +2,24 @@ package com.example.kotlinearthquakemonitor.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.kotlinearthquakemonitor.Earthquake
+import com.example.kotlinearthquakemonitor.R
+import com.example.kotlinearthquakemonitor.api.ApiResponseStatus
 import com.example.kotlinearthquakemonitor.databinding.ActivityMainBinding
 
+private const val SORT_TYPE_KEY = "sort_type"
+
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var viewModel: MainViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -19,7 +28,9 @@ class MainActivity : AppCompatActivity() {
 
         binding.eqRecycler.layoutManager = LinearLayoutManager(this)
 
-        val viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        val sortType = getSortType()
+
+        viewModel = ViewModelProvider(this, MainViewModelFactory(application, sortType)).get(MainViewModel::class.java)
 
         val adapter = EqAdapter()
         binding.eqRecycler.adapter = adapter
@@ -29,6 +40,17 @@ class MainActivity : AppCompatActivity() {
             adapter.submitList(eqList)
 
             handleEmptyView(eqList, binding)
+        })
+
+        viewModel.status.observe(this, Observer {
+            apiResponseStatus ->
+            if( apiResponseStatus == ApiResponseStatus.LOADING) {
+                binding.loadingWheel.visibility = View.VISIBLE
+            } else if (apiResponseStatus == ApiResponseStatus.DONE ) {
+                binding.loadingWheel.visibility = View.GONE
+            } else if (apiResponseStatus == ApiResponseStatus.ERROR) {
+                binding.loadingWheel.visibility = View.GONE
+            }
         })
 
         /*
@@ -54,6 +76,40 @@ class MainActivity : AppCompatActivity() {
 
         //service.getLastHourEarthquakes()
     }
+
+    private fun getSortType(): Boolean {
+        val prefs = getPreferences(MODE_PRIVATE)
+        return prefs.getBoolean(SORT_TYPE_KEY, false)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val itemId = item.itemId
+        if(itemId == R.id.main_menu_sort_magnitude){
+            // TODO: - Sort by magnitude
+            viewModel.reloadEarthquakesFromDatabase(true)
+            saveSortType(true)
+        } else if (itemId == R.id.main_menu_sort_time) {
+            saveSortType(false)
+            // TODO: - Sort by time
+            viewModel.reloadEarthquakesFromDatabase(false)
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun saveSortType(sortBymagnitude: Boolean){
+        val prefs = getPreferences(MODE_PRIVATE)
+        //val prefs = getSharedPreferences("eq_prefs", MODE_PRIVATE)
+        val editor = prefs.edit()
+        editor.putBoolean(SORT_TYPE_KEY, sortBymagnitude)
+        editor.apply()
+
+    }
+
 
     private fun handleEmptyView(
         eqList: MutableList<Earthquake>,
